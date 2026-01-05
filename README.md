@@ -1,3 +1,27 @@
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+14. Wordpress website css and other assests were not loading properly
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Date: 04/01/26
+
+Following things help me solve the issue
+a. I added it in my nginx conf
+proxy_set_header X-Forwarded-Proto https; because https was terminating at the alb level.
+
+b. wp-config.php Proxy Fix
+WordPress doesn’t automatically trust X-Forwarded-Proto from LB. So, I added the following in my wp-config.php
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+    $_SERVER['HTTPS'] = 'on';
+}
+
+c. When WordPress was first accessed via your internal IP, it stored that IP in thousands of places in the database—posts, pages, CSS files, media, etc. So, all references to the internal IP were replaced with  real domain. Images, fonts, and other assets now load correctly.
+
+wp search-replace "http://x.x.x.x" "https://abc.me" --all-tables
+
+d. also added this in my docker compose file
+- WORDPRESS_SCHEME=https
+- WORDPRESS_HOST=alterna.me
+- WORDPRESS_ENABLE_HTTPS=yes
+Without them, Bitnami would re-detect HTTP (because of the load balancer) and undo HTTPS fixes after every restart.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 13. ClickJacking and Essential Http Headers
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
