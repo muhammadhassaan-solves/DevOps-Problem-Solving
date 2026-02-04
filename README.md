@@ -1,3 +1,44 @@
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+16. WAF was stopping a post request from the one of our clients
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Date: 04/02/26
+
+The eks cluster was running in production with WAF implemented. One of clients has to make a post request over the internet but it was facing 403 forbidden error.
+We checked WAF logs and the clients IPs and the behaviour of WAF with each of the client ip. We found that on client side a header "User-Agent" wasn't existing and 
+one of our aws managed rule set named "AWS-AWSManagedRulesCommonRuleSet" was blocking it . So, we made an exception for our client by defining a custom WAF rule that 
+allowed the client to make only post request on specfic api path from the provided ips. 
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+15. Managing Critical Secret while giving flexibility in CICD Dev Enviroment  
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Date: 03/02/26
+
+The DB url was one of the critical secret so, keeping it in .env was not a safe approach. So, used gituhub repo secrets feature to push the secret in the container.
+while allowing the developer to use .env for non critical secrets without any hurdle.
+
+This is what i used in my github actions cicd deployment setup:
+
+   script: |
+            set -e
+            ENV_PATH=/tmp/x.env
+            # Copy the repo .env from runner to server
+            cat .env | tee $ENV_PATH > /dev/null
+            chmod 600 $ENV_PATH
+            # Docker login
+            echo "${{ secrets.DOCKER_PASS }}" | docker login -u "${{ secrets.DOCKER_UNAME }}" --password-stdin
+            docker pull ${{ secrets.DOCKER_UNAME }}/x:latest
+            # Remove old container
+            docker rm -f x || true
+            # Run container: DATABASE_URL from secret, rest from .env
+            docker run -d \
+              --name x \
+              --restart unless-stopped \
+              -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
+              --env-file $ENV_PATH \
+              -p 7010:8080 \
+              ${{ secrets.DOCKER_UNAME }}/x:beta
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 14. Wordpress website css and other assests were not loading properly
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
