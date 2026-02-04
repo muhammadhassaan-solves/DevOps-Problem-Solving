@@ -19,7 +19,6 @@ while allowing the developer to use .env for non critical secrets without any hu
 
 This is what i used in my github actions cicd deployment setup:
 
-   script: |
             set -e
             ENV_PATH=/tmp/x.env
             # Copy the repo .env from runner to server
