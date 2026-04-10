@@ -1,3 +1,24 @@
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+18. RAG API Hanging
+Date: 10/04/26
+RAG API was hanging due to an internal dependency (DB/vector search/LLM call) blocking without timeouts.
+This caused Nginx to return 504 errors as no response headers were received in time.
+Restarting the Docker container temporarily fixed the issue by clearing stuck processes and connections.
+so, i set Docker resource limits for automatic restart upon reaching cpu or memory limits.
+
+docker run -d \
+  --name rag-app \
+  -p 7055:8000 \
+  --memory=2g \
+  --memory-swap=2g \
+  --cpus="1.5" \
+  --restart unless-stopped \
+  example/rag-app:beta
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+17. Enhanced CICD for a client but upload feature (Docker Volume) was not working in the api.
+Date: 9/04/26
+Before enhancements, container was running as root. so, things were working. After enhancements, i ran the container as non-root. and filesystem related to docker volume doesn't have the requried permission. So, i simply exec into the container, found out the uid and gid and change the ownership of respective docker volume filesystem.
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 16. WAF was stopping a post request being made by one of our clients/partners
