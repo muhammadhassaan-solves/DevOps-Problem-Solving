@@ -6,14 +6,14 @@ This caused Nginx to return 504 errors as no response headers were received in t
 Restarting the Docker container temporarily fixed the issue by clearing stuck processes and connections.
 so, i set Docker resource limits for automatic restart upon reaching cpu or memory limits.
 
-docker run -d \
-  --name rag-app \
-  -p 7055:8000 \
-  --memory=2g \
-  --memory-swap=2g \
-  --cpus="1.5" \
-  --restart unless-stopped \
-  example/rag-app:beta
+  docker run -d \
+    --name rag-app \
+    -p 7055:8000 \
+    --memory=2g \
+    --memory-swap=2g \
+    --cpus="1.5" \
+    --restart unless-stopped \
+    example/rag-app:beta
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 17. Enhanced CICD for a client but upload feature (Docker Volume) was not working in the api.
