@@ -12,8 +12,8 @@ After the fix, NGINX correctly passed the request and the WebSocket connection w
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 18. RAG API Hanging
 -------------------------------------------------------------------------------------------------------------------------------------------------------
-
 Date: 10/04/26
+
 RAG API was hanging due to an internal dependency (DB/vector search/LLM call) blocking without timeouts.
 This caused Nginx to return 504 errors as no response headers were received in time.
 Restarting the Docker container temporarily fixed the issue by clearing stuck processes and connections.
