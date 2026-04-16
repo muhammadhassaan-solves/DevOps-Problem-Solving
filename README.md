@@ -1,12 +1,19 @@
+19. WebSocket 400 Error
+Date: 16/04/26
+
+WebSocket connection failed because NGINX (frontend proxy layer) was not forwarding the required upgrade headers.
+As a result, the backend received a normal HTTP request instead of a WebSocket handshake, causing 400 errors.
+WebSocket starts as an HTTP request and requires protocol upgrade headers.
+Fix: enabled HTTP/1.1 and forwarded Upgrade and Connection: upgrade headers in NGINX.
+After the fix, NGINX correctly passed the request and the WebSocket connection was established.
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 18. RAG API Hanging
 Date: 10/04/26
 RAG API was hanging due to an internal dependency (DB/vector search/LLM call) blocking without timeouts.
 This caused Nginx to return 504 errors as no response headers were received in time.
 Restarting the Docker container temporarily fixed the issue by clearing stuck processes and connections.
-so, i set Docker resource limits for automatic restart upon reaching cpu or memory limits.
-
- docker run -d --name rag-app -p 7055:8000 --memory=2g --memory-swap=2g --cpus="1.5" --restart unless-stopped example/rag-app:beta
+so, i set Docker resource limits for automatic restart upon reaching cpu or memory limits. docker run -d --name rag-app -p 7055:8000 --memory=2g --memory-swap=2g --cpus="1.5" --restart unless-stopped example/rag-app:beta
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 17. Enhanced CICD for a client but upload feature (Docker Volume) was not working in the api.
