@@ -22,8 +22,8 @@ so, i set Docker resource limits for automatic restart upon reaching cpu or memo
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 17. Enhanced CICD for a client but upload feature (Docker Volume) was not working in the api.
 -------------------------------------------------------------------------------------------------------------------------------------------------------
-
 Date: 9/04/26
+
 Before enhancements, container was running as root. so, things were working. After enhancements, i ran the container as non-root. and filesystem related to docker volume doesn't have the requried permission. So, i simply exec into the container, found out the uid and gid and change the ownership of respective docker volume filesystem.
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
