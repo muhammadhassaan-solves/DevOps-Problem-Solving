@@ -1,4 +1,12 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------
+20. 4x Latency Discrepancy in API Calls (Frontend vs Postman)
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+Date: 29/04/26
+
+We identified a significant performance mismatch where Azure OpenAI API requests completed in 2 minutes via Postman but took 8 minutes when triggered from the frontend.
+Root cause analysis revealed that NGINX was buffering streaming responses by default, which prevented real-time passthrough of data from the backend. This caused the frontend to perceive the request as stalled, leading to timeout behavior and unintended retry attempts. Since the workload relies on streaming responses, buffering introduced unnecessary latency and disrupted the response flow. So, disabled proxy_buffering helped solve the issue.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
 19. WebSocket 400 Error
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 Date: 16/04/26
