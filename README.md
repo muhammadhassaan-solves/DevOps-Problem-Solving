@@ -1,4 +1,19 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------
+21. Developer pushed .env in the github repo Accendially 
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+Date: 19/06/26
+
+A dev pushed .env in the github repo. so, I used git-filter-repo tool that helped rewrite every commit and remove .env from every snapshot.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+21. Pod was crashing due to heap memory
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+Date: 11/05/26
+
+A production kubernetes pod was crashing continuously after a specfic period of time. So, I took the respective developer on a meeting and he asked to increase the heap memory. so, I added this in the env block name: NODE_OPTIONS value: "--max-old-space-size=1024" in the deployment.yaml 
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
 20. 4x Latency Discrepancy in API Calls (Frontend vs Postman)
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 Date: 29/04/26
