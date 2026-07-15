@@ -1,5 +1,17 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------
-22. Developer pushed .env in the github repo Accendially 
+23. Puppeteer Chrome Launch Failure in Docker Container
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+Date: 15/07/26
+
+A Node.js application using Puppeteer failed to generate PDFs inside a Docker container with the following error:
+Error: Could not find Chrome 
+
+The application used a multi-stage Docker build. Even if Puppeteer downloaded Chrome during the build stage, the browser cache was not copied into the final production image.
+
+Installed Alpine Chromium in the production image and configured Puppeteer to use it explicitly.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+22. Developer pushed .env in the github repo accidentally
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 Date: 19/06/26
 
